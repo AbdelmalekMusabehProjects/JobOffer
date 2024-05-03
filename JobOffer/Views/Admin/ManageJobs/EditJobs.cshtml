@@ -1,0 +1,112 @@
+﻿@model JobOffer.Models.Jobh
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_DashboardAdminLayout.cshtml";
+}
+<div class="page-header" style="margin-left:250px;margin-top:30px">
+    <div class="page-block">
+        <div class="row align-items-center">
+            <div class="col-md-12">
+                <div class="page-header-title">
+                    <h5 class="m-b-10" style="font-size:20px;font-weight:bold; color:#89ba16">Edit Jobs</h5>
+                </div>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a asp-action="Dashboard" asp-controller="Admin"><i class="feather icon-home"></i></a></li>
+                    <li class="breadcrumb-item"><a href="#!">Manage Jobs</a></li>
+                    <li class="breadcrumb-item"><a href="#!">Edit</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<div style="margin-left:300px">
+
+    <form asp-action="EditJobs" method="post" enctype="multipart/form-data">
+        <div class="form-row">
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Jobid" />
+            <div class="col-md-3 mb-4" style="width:300px">
+                <label asp-for="Jobname" class="control-label"></label>
+                <input asp-for="Jobname" class="form-control" />
+                <span asp-validation-for="Jobname" class="text-danger"></span>
+            </div>
+            <div class="col-md-3 mb-4" style="width:300px">
+                <label asp-for="Jobdescription" class="control-label"></label>
+                <input asp-for="Jobdescription" class="form-control" />
+                <span asp-validation-for="Jobdescription" class="text-danger"></span>
+            </div>
+            <div class="col-md-3 mb-4" style="width:300px">
+                <label asp-for="Jobsalary" class="control-label"></label>
+                <input asp-for="Jobsalary" class="form-control" />
+                <span asp-validation-for="Jobsalary" class="text-danger"></span>
+            </div>
+            <div class="col-md-3 mb-4" style="width:300px">
+                <label asp-for="Status" class="control-label"></label>
+                    <select asp-for="Status" asp-items="ViewBag.Status" class="form-control" ></select>
+                <span asp-validation-for="Status" class="text-danger"></span>
+            </div>
+            <div class="col-md-3 mb-4" style="width:300px">
+                <label asp-for="Jobtype" class="control-label"></label>
+                    <select asp-for="Jobtype" asp-items="ViewBag.Jobtype" class="form-control" ></select>
+                <span asp-validation-for="Jobtype" class="text-danger"></span>
+            </div>
+            <div class="col-md-3 mb-4" style="width:300px">
+                <label asp-for="Userid" class="control-label"></label>
+                <select asp-for="Userid" class="form-control" asp-items="ViewBag.Userid"></select>
+                <span asp-validation-for="Userid" class="text-danger"></span>
+            </div>
+            <div class="col-md-3 mb-4" style="width:300px">
+                <label asp-for="Addressid" class="control-label"></label>
+                <select asp-for="Addressid" class="form-control" asp-items="ViewBag.Addressid"></select>
+                <span asp-validation-for="Addressid" class="text-danger"></span>
+            </div>
+            <div class="col-md-3 mb-4" style="width:300px">
+                <label asp-for="Jobcategoryid" class="control-label"></label>
+                <select asp-for="Jobcategoryid" class="form-control" asp-items="ViewBag.Jobcategoryid"></select>
+                <span asp-validation-for="Jobcategoryid" class="text-danger"></span>
+            </div>
+            <div class="col-md-3 mb-3" style="width:300px">
+                <label asp-for="ImageFile" class="control-label"></label>
+                <input asp-for="ImageFile" class="form-control" />
+                <span asp-validation-for="ImageFile" class="text-danger"></span>
+            </div>
+            <div class="col-md-3 mb-4" style="margin-left:510px">
+                <input type="submit" value="Save" class="btn btn-primary" style="width:130px" /> |
+                    <a asp-action="Mainjobs">Back to List</a>
+            </div>
+        </div>
+        </form>
+  
+</div>
+
+
+
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+
+    <h1>h</h1>
+
+@*@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+*@

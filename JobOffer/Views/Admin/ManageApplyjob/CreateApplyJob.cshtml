@@ -1,0 +1,87 @@
+﻿@model JobOffer.Models.Applyjob
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_DashboardAdminLayout.cshtml";
+}
+<div class="page-header" style="margin-left:250px;margin-top:30px">
+    <div class="page-block">
+        <div class="row align-items-center">
+            <div class="col-md-12">
+                <div class="page-header-title">
+                    <h5 class="m-b-10" style="font-size:20px;font-weight:bold; color:#89ba16">Manage Apply Job</h5>
+                </div>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a asp-action="Dashboard" asp-controller="Admin"><i class="feather icon-home"></i></a></li>
+                    <li class="breadcrumb-item"><a href="#!">Create Apply Job</a></li>
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div style="margin-left:250px">
+    <div class="col-md-4">
+        <form asp-action="CreateApplyJob">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Attachid" class="control-label"></label>
+                <select asp-for="Attachid" class ="form-control" asp-items="ViewBag.Attachid"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Userid" class="control-label"></label>
+                <select asp-for="Userid" class ="form-control" asp-items="ViewBag.Userid"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Jobid" class="control-label"></label>
+                <select asp-for="Jobid" class ="form-control" asp-items="ViewBag.Jobid"></select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />|
+                <a asp-action="MainApplyJob">Back to List</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+@*@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+*@
+<br />
+<br />
+
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+
+<br />
+
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />

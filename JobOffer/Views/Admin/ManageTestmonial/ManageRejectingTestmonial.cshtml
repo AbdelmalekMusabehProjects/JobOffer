@@ -1,0 +1,87 @@
+﻿@model IEnumerable<JobOffer.Models.Testmonialh>
+
+@{
+    Layout = "~/Views/Shared/_DashboardAdminLayout.cshtml";
+}
+
+<div class="page-header" style="margin-left:250px;margin-top:30px">
+    <div class="page-block">
+        <div class="row align-items-center">
+            <div class="col-md-12">
+                <div class="page-header-title">
+                    <h5 class="m-b-10" style="font-size:20px;font-weight:bold; color:#89ba16">Manage Rejecting</h5>
+                </div>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a asp-action="Dashboard" asp-controller="Admin"><i class="feather icon-home"></i></a></li>
+                    <li class="breadcrumb-item"><a href="#!">Manage Testmonial</a></li>
+                    <li class="breadcrumb-item"><a href="#!">Manage Rejecting</a></li>
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div style="width:500px">
+    <table class="table is-bordered" style="margin-top:50px;margin-left:250px">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Message)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Status)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.User)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Message)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Status)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.User.Username)
+                    </td>
+                    <td>
+                        <a asp-action="AcceptTestmonial" asp-route-id="@item.Testmonialid">Accept</a> |
+                        <a asp-action="MainTestmonials" asp-route-id="@item.Testmonialid">Cancel</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<h1>h</h1>

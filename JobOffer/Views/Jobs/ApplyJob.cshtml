@@ -1,0 +1,73 @@
+﻿@model IEnumerable<JobViewJoin>
+
+@{
+    Layout = "~/Views/Shared/_ActualUserLayout.cshtml";
+    var Jobid = ViewBag.Jobid;
+}
+<section class="section-hero overlay inner-page bg-image" style="background-image: url('../Assests/images/hero_1.jpg');" id="home-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-7">
+                <h1 class="text-white font-weight-bold">Apply Job</h1>
+                <div class="custom-breadcrumbs">
+                    <a  asp-action="Home" asp-controller="ActualUser">Home</a> <span class="mx-2 slash">/</span>
+                    <a> <span class="text-white"><strong>Apply Job</strong></span></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+          
+<section class="site-section">
+    @foreach (var item in Model)
+            {
+                        <div class="container">
+                            <div class="row align-items-center mb-5">
+                                <div class="col-lg-8 mb-4 mb-lg-0">
+                                    <div class="d-flex align-items-center" style="margin-top:50px">
+                                        <div class="border p-2 d-inline-block mr-3 rounded">
+                                           <img src="@Url.Content("~/JobsImages/" + item.Job.Jobimage)" alt="Image">
+                                        </div>
+                                        <div>
+                                            <h2>@item.Job.Jobname</h2>
+                                            <div>
+                                                <span class="ml-0 mr-2 mb-2"><span class="icon-briefcase mr-2"></span>@item.Account.Industialname</span>
+                                                    <span class="m-2"><span class="icon-room mr-2"></span>@*@item.Address.Addresscity, @item.Address.Addressname*@</span>
+                                                <span class="m-2"><span class="icon-clock-o mr-2"></span><span class="text-primary">@item.Job.Jobtype</span></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+@*asp-route-Userid="@item.Account.Userid"*@
+                     <div class="col-lg-4">
+                                    <div class="row">
+                                       <div class="col-6">
+                                               <form asp-action="ApplyJobSubmission"  asp-route-JobId="@item.Job.Jobid" asp-controller="Jobs" method="post" enctype="multipart/form-data">
+                                                <input type="file" name="PdfFile" id="files" style="visibility:hidden;" class="btn btn-block btn-light btn-md" />
+                                                <input type="submit" class="btn btn-block btn-primary btn-md" value="Apply Now"/>
+                                               <label for="files" class="btn" style="margin-left:20px;font-weight:bold;color:black; text-decoration: underline;">Upload CV</label>
+
+                                                </form>
+                                        </div>
+                                        
+                                        <div class="col-6">
+                                        </div>      
+                                    </div>
+                                </div>
+                               </div>
+
+                            <div class="row">
+                                <div class="col-lg-8">
+                                    <div class="mb-5">
+                                        <h3 class="h5 d-flex align-items-center mb-4 text-primary"><span class="icon-align-left mr-3"></span>Job Description</h3>
+                                        <p>@item.Job.Jobdescription</p>
+                                    </div>
+                    
+                                </div>
+
+                            </div>
+                        </div>
+                
+            }
+</section>

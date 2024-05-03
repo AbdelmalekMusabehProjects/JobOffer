@@ -1,0 +1,43 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_GuestUserLayout.cshtml";
+}
+<!-- HOME -->
+<section class="section-hero overlay inner-page bg-image" style="background-image: url('../Assests/images/hero_1.jpg');" id="home-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-7">
+                <h1 class="text-white font-weight-bold">Candidate's Testimonials</h1>
+                <div class="custom-breadcrumbs">
+                    <a asp-action="Home" asp-controller="GuestUser">Home</a> <span class="mx-2 slash">/</span>
+                    <span class="text-white"><strong>Testimonials</strong></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+    <section class="site-section" id="next-section">
+        <div class="container" >
+
+            <div class="row" >
+                @foreach (var item in Model)
+{
+                <div class="col-lg-3 mb-4">
+                    <div class="block__87154">
+                        <blockquote>
+                            <p>@item.Test.Message</p>
+                        </blockquote>
+                        <div class="block__91147 d-flex align-items-center">
+                            <figure class="mr-4"><img src="~/PersonalImages/@item.Account.Imagepath" alt="Image" class="img-fluid"></figure>
+                            <div>
+                                <h3>@item.Account.Fullname</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                }
+            </div>
+        </div>
+    </section>

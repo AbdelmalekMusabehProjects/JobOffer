@@ -1,0 +1,101 @@
+﻿@model JobOffer.Models.Useraccounth;
+
+@{
+    Layout = Layout = "~/Views/Shared/_GuestUserLayout.cshtml"; ;
+}
+
+
+
+
+
+<!-- HOME -->
+<section class="section-hero overlay inner-page bg-image" style="background-image: url('../Assests/images/hero_1.jpg');" id="home-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-7">
+                <h1 class="text-white font-weight-bold">Sign Up</h1>
+                <div class="custom-breadcrumbs">
+                    <a href="#">Home</a> <span class="mx-2 slash">/</span>
+                    <span class="text-white"><strong>Sign Up</strong></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="site-section" style="height:1000px">
+    <div class="container">
+        <div class="singup1">
+
+
+            <div class="col-lg-6" style="margin-top:460px">
+                <h2 class="mb-4" style="margin-left:210px;height:25px;"> Sign Up</h2>
+                <form method="post" asp-action="signUp" enctype="multipart/form-data" class="p-4 border rounded">
+
+                    <div class="row form-group">
+
+                        <div class="col-md-12 mb-3 mb-md-0">
+                            <label asp-for="Fullname" class="text-black" for="fname">Full Name</label>
+                            <input asp-for="Fullname" required="true" id="fname" class="form-control" placeholder="Full Name" type="text">
+                        </div>
+                    </div>
+
+                    <div class="row form-group">
+                        <div class="col-md-12 mb-3 mb-md-0">
+                            <label asp-for="Username" class="text-black" for="fname">User Name</label>
+                            <input asp-for="Username" required="true" type="text" id="fname" class="form-control" placeholder="User Name">
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-md-12 mb-3 mb-md-0">
+                            <label asp-for="Email" class="text-black" for="fname">Email</label>
+                            <input asp-for="Email" required="true" id="fname" class="form-control" placeholder="Email" type="email">
+                        </div>
+                    </div>
+                    <div class="row form-group mb-4">
+                        <div class="col-md-12 mb-3 mb-md-0">
+                            <label asp-for="Phonenumber" class="text-black" for="fname">Phone Number</label>
+                            <input asp-for="Phonenumber" required="true" id="fname" class="form-control" placeholder="Phonenumber">
+                        </div>
+                    </div>
+
+                    <div class="row form-group mb-4">
+                        <div class="col-md-12 mb-3 mb-md-0">
+                            <label asp-for="Industialname" class="text-black" for="fname">Industrial Name</label>
+                            <input asp-for="Industialname" required="true" id="fname" class="form-control" placeholder="Industialname">
+                        </div>
+                    </div>
+                    <div class="row form-group mb-4">
+                        <div class="col-md-12 mb-3 mb-md-0">
+
+                            <label asp-for="ImageFile" class="control-label"></label>
+                            <input asp-for="ImageFile" class="form-control" required="true"/>
+                            <span asp-validation-for="ImageFile" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="row form-group mb-4">
+                        <div class="col-md-12 mb-3 mb-md-0">
+                            <label asp-for="Password" class="text-black" for="fname">Password</label>
+                            <input asp-for="Password" required="true" type="password" id="fnames" class="form-control" placeholder="Password">
+                            <input type="checkbox" onclick="myFunction()">Show Password
+                        </div>
+                    </div>
+
+                    <div class="row form-group">
+                        <div class="col-md-12">
+                            <input type="submit" value="Sign Up" class="btn px-4 btn-primary text-white"><br />
+                            <a asp-action="Login" asp-controller="Auth" style="color:black;font-size:15px;font-weight:bold">Have an account?</a>
+
+                        </div>
+                    </div>
+
+                </form>
+
+
+            </div>
+        </div>
+    </div>
+</section>
+
+

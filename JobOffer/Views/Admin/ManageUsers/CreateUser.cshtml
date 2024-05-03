@@ -1,0 +1,130 @@
+﻿@model JobOffer.Models.Useraccounth
+
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_DashboardAdminLayout.cshtml";
+}
+
+
+
+
+    <div class="page-header" style="margin-left:250px;margin-top:30px">
+        <div class="page-block">
+            <div class="row align-items-center">
+                <div class="col-md-12">
+                    <div class="page-header-title">
+                    <h5 class="m-b-10" style="font-size:20px;font-weight:bold; color:#89ba16">Create Account</h5>
+                    </div>
+                    <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a asp-action="Dashboard" asp-controller="Admin"><i class="feather icon-home"></i></a></li>
+                        <li class="breadcrumb-item"><a href="#!">Manage User</a></li>
+                    <li class="breadcrumb-item"><a href="#!">Create New</a></li>
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+<div style="margin-left:300px;">
+
+
+
+    <form asp-action="CreateUser" method="post" enctype="multipart/form-data">
+     <div class="form-row">
+      
+
+        
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+             <div class="col-md-3 mb-4" style="width:300px">
+                <label asp-for="Fullname" class="control-label"></label>
+                <input asp-for="Fullname" class="form-control" />
+                <span asp-validation-for="Fullname" class="text-danger"></span>
+            </div>
+            <div class="col-md-3 mb-4" style="width:300px">
+                <label asp-for="Username" class="control-label"></label>
+                <input asp-for="Username" class="form-control" />
+                <span asp-validation-for="Username" class="text-danger"></span>
+            </div>
+            <div class="col-md-3 mb-4" style="width:300px">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" type="email" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="col-md-3 mb-4" style="width:300px">
+                <label asp-for="Phonenumber" class="control-label"></label>
+                <input asp-for="Phonenumber" class="form-control" />
+                <span asp-validation-for="Phonenumber" class="text-danger"></span>
+
+                </div>
+            </div>
+   
+            <div class="form-row">
+
+            <div class="col-md-3 mb-3" style="width:300px">
+                <label asp-for="Industialname" class="control-label"></label>
+                <input asp-for="Industialname" class="form-control" />
+                <span asp-validation-for="Industialname" class="text-danger"></span>
+                 </div>
+            <div class="col-md-3 mb-3" style="width:300px">
+                <label asp-for="Roleid" class="control-label"></label>
+                <select asp-for="Roleid" class ="form-control" asp-items="ViewBag.Roleid"></select>
+              </div>
+            <div class="col-md-3 mb-3" style="width:300px">
+                <label asp-for="Password" class="control-label"></label>
+                <input asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+              </div>
+            <div class="col-md-3 mb-3" style="width:300px">
+                    <label asp-for="ImageFile" class="control-label"></label>
+                    <input asp-for="ImageFile" class="form-control" />
+                    <span asp-validation-for="ImageFile" class="text-danger"></span>
+                  </div>
+
+                </div>
+                      <div class="form-group" style="margin-left:510px">
+                <input type="submit" value="Create" class="btn btn-primary" style="width:130px" /> |
+
+
+
+                    <a asp-action="Mainuser">Back to List</a>
+            </div>
+              </form>
+
+              <br />
+          
+   
+      </div>
+
+
+      <br />
+      <br />
+      <br />
+      <br />
+      
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<h4>f</h4>
+
+
+@*@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+*@

@@ -1,0 +1,101 @@
+﻿@model IEnumerable<JobOffer.Models.Addressh>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_DashboardAdminLayout.cshtml";
+}
+
+<div class="page-header" style="margin-left:250px;margin-top:30px">
+    <div class="page-block">
+        <div class="row align-items-center">
+            <div class="col-md-12">
+                <div class="page-header-title">
+                    <h5 class="m-b-10" style="font-size:20px;font-weight:bold; color:#89ba16">Manage Address</h5>
+                </div>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a asp-action="Dashboard" asp-controller="Admin"><i class="feather icon-home"></i></a></li>
+                    <li class="breadcrumb-item"><a href="#!">Manage Address</a></li>
+
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<a asp-action="CreateAddress">
+    <button type="button"
+            class="btn btn-outline-success" style="margin-left:250px">
+        Create New
+    </button>
+
+
+</a>
+<div style="width:50px;margin-left:250px">
+
+    <table class="table is-bordered" style="margin-top:20px">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Addressname)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Addresscity)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Addressname)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Addresscity)
+            </td>
+            <td>
+                <a asp-action="EditAddress" asp-route-id="@item.Addressid">Edit</a> |
+                <a asp-action="DetailsAddress" asp-route-id="@item.Addressid">Details</a> |
+                <a asp-action="DeleteAddress" asp-route-id="@item.Addressid">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+</div>
+
+
+
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<h1>h</h1>

@@ -1,0 +1,122 @@
+﻿@model JobOffer.Models.Useraccounth
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_DashboardAdminLayout.cshtml";
+}
+
+
+
+<div class="page-header" style="margin-left:250px;margin-top:30px">
+    <div class="page-block">
+        <div class="row align-items-center">
+            <div class="col-md-12">
+                <div class="page-header-title">
+                    <h5 class="m-b-10" style="font-size:20px;font-weight:bold; color:#89ba16">Edit Account</h5>
+                </div>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a asp-action="Dashboard" asp-controller="Admin"><i class="feather icon-home"></i></a></li>
+                    <li class="breadcrumb-item"><a href="#!">Manage User</a></li>
+                    <li class="breadcrumb-item"><a href="#!">Edit</a></li>
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div style="margin-left:300px;" >
+
+
+
+  
+        <form asp-action="EditUser" method="post" enctype="multipart/form-data">
+        <div class="form-row">
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Userid" />
+
+            <div class="col-md-3 mb-3" style="width:300px">
+                <label asp-for="Fullname" class="control-label"></label>
+                <input asp-for="Fullname" class="form-control" />
+                <span asp-validation-for="Fullname" class="text-danger"></span>
+            </div>
+            <div class="col-md-3 mb-3" style="width:300px">
+                <label asp-for="Username" class="control-label"></label>
+                <input asp-for="Username" class="form-control" />
+                <span asp-validation-for="Username" class="text-danger"></span>
+            </div>
+            <div class="col-md-3 mb-3" style="width:300px">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="col-md-3 mb-3" style="width:300px">
+                <label asp-for="Phonenumber" class="control-label"></label>
+                <input asp-for="Phonenumber" class="form-control" />
+                <span asp-validation-for="Phonenumber" class="text-danger"></span>
+            </div>
+            <div class="col-md-3 mb-3" style="width:300px">
+                <label asp-for="Industialname" class="control-label"></label>
+                <input asp-for="Industialname" class="form-control" />
+                <span asp-validation-for="Industialname" class="text-danger"></span>
+            </div>
+            <div class="col-md-3 mb-3" style="width:300px">
+                <label asp-for="Roleid" class="control-label"></label>
+                <select asp-for="Roleid" class="form-control" asp-items="ViewBag.Roleid"></select>
+                <span asp-validation-for="Roleid" class="text-danger"></span>
+            </div>
+            <div class="col-md-3 mb-3" style="width:300px">
+                <label asp-for="Password" class="control-label"></label>
+                <input asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="col-md-3 mb-3" style="width:300px">
+                <label asp-for="ImageFile" class="control-label"></label>
+                    <input asp-for="ImageFile" class="form-control" />
+                    <span asp-validation-for="ImageFile" class="text-danger"></span>
+            </div>
+            <div class="col-md-3 mb-3" style="margin-left:510px">
+                <input type="submit" value="Save" class="btn btn-primary" style="width:130px" /> |
+                    <a asp-action="MainUser">Back to List</a>
+            </div>
+        </div>
+        </form>
+    
+</div>
+
+
+
+@*@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+*@
+
+
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<h1>h</h1>

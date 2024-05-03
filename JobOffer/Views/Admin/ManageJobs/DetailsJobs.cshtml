@@ -1,0 +1,102 @@
+﻿@model JobOffer.Models.Jobh
+
+@{
+    Layout = "~/Views/Shared/_DashboardAdminLayout.cshtml";
+}
+
+
+<div class="page-header" style="margin-left:250px;margin-top:30px">
+<div class="page-block">
+    <div class="row align-items-center">
+        <div class="col-md-12">
+            <div class="page-header-title">
+                    <h5 class="m-b-10" style="font-size:20px;font-weight:bold; color:#89ba16">Details Jobs</h5>
+            </div>
+            <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a asp-action="Dashboard" asp-controller="Admin"><i class="feather icon-home"></i></a></li>
+                <li class="breadcrumb-item"><a href="#!">Manage Jobs</a></li>
+                <li class="breadcrumb-item"><a href="#!">Details</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+</div>
+
+
+<div style="margin-left:650px">
+
+
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Jobname)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Jobname)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Jobdescription)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Jobdescription)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Jobsalary)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Jobsalary)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Status)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Status)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Jobtype)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Jobtype)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Address)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Address.Addresscity)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Jobcategory)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Jobcategory.Jobcategoryname)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.User)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.User.Email)
+        </dd>
+    </dl>
+    <br />
+    <a asp-action="MainJobs">Back to List</a>
+</div>
+
+<br />
+<br />
+<br />
+<br />
+
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<h4>f</h4>

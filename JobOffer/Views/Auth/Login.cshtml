@@ -1,0 +1,61 @@
+﻿@model JobOffer.Models.Useraccounth;
+
+@{
+    Layout = "~/Views/Shared/_GuestUserLayout.cshtml";
+}
+
+        <!-- HOME -->
+        <section class="section-hero overlay inner-page bg-image" style="background-image: url('../Assests/images/hero_1.jpg');" id="home-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-7">
+                        <h1 class="text-white font-weight-bold">Login</h1>
+                        <div class="custom-breadcrumbs">
+                            <a href="#">Home</a> <span class="mx-2 slash">/</span>
+                            <span class="text-white"><strong>Log In</strong></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="site-section" style="height:600px">
+            <div class="container">
+                <div class="login1">
+                    
+                    <div class="col-lg-6" style="margin-top:30px">
+                <h2 class="mb-4" style="margin-left:220px;height:25px"> Log In </h2>
+                <form method="post" asp-action="Login" asp-controller="Auth" class="p-4 border rounded">
+
+                            <div class="row form-group">
+                                <div class="col-md-12 mb-3 mb-md-0">
+                                    <label asp-for="Username" class="text-black" for="fname">UserName</label>
+                            <input asp-for="Username" required="true" class="form-control" placeholder="UserName"  Required>
+                                </div>
+                            </div>
+
+                            <div class="row form-group mb-4">
+                                <div class="col-md-12 mb-3 mb-md-0">
+                                    <label asp-for="Password" class="text-black">Password</label>
+                            <input  asp-for="Password" required="true" id="fnamel" class="form-control" placeholder="Password" type="password" >
+                           
+                            <a asp-action="ForgotPass" asp-controller="Auth" style="color:black;font-size:15px;font-weight:bold">Forgot Password?</a>
+
+                                </div>
+                            </div>
+
+                            <div class="row form-group">
+                                <div class="col-md-12">
+                            <input type="submit"  value="Log In" class="btn px-4 btn-primary text-white"> <br />
+                            <a asp-action="SignUp" asp-controller="Auth" style="color:black;font-size:15px;font-weight:bold">New? Create an account</a>
+                            
+
+                                 </div>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+

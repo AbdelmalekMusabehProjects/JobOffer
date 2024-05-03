@@ -1,0 +1,131 @@
+﻿@model IEnumerable<JobOffer.Models.Jobh>
+
+@{
+    Layout = "~/Views/Shared/_DashboardAdminLayout.cshtml";
+
+}
+
+
+<div class="page-header" style="margin-left:250px;margin-top:30px">
+    <div class="page-block">
+        <div class="row align-items-center">
+            <div class="col-md-12">
+                <div class="page-header-title">
+                    <h5 class="m-b-10" style="font-size:20px;font-weight:bold; color:#89ba16">Manage Jobs</h5>
+                </div>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a asp-action="Dashboard" asp-controller="Admin"><i class="feather icon-home"></i></a></li>
+                    <li class="breadcrumb-item"><a href="#!">Manage Jobs</a></li>
+
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<a asp-action="CreateJobs">
+    <button type="button"
+            class="btn btn-outline-success" style="margin-left:300px">
+        Create New
+    </button>
+
+
+</a>
+
+<div style="width:350px">
+
+    <table class="table is-bordered" style="margin-top:20px;margin-left:300px">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Jobname)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Jobdescription)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Jobsalary)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Jobtype)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Address)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Jobcategory)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Jobimage)
+            </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.User)
+                </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Jobname)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Jobdescription)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Jobsalary)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Jobtype)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Address.Addresscity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Jobcategory.Jobcategoryname)
+            </td> 
+            <td>
+               <img src="@Url.Content("~/JobsImages/" + @item.Jobimage)" width="100" height="100" />
+               </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.Username)
+            </td>
+           
+            <td>
+                    <a asp-action="EditJobs" asp-route-id="@item.Jobid">Edit</a> |
+                    <a asp-action="DetailsJobs" asp-route-id="@item.Jobid">Details</a> |
+                    <a asp-action="DeleteJobs" asp-route-id="@item.Jobid">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+</div>
+
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<h1>h</h1>
