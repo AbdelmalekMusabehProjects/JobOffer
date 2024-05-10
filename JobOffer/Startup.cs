@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using JobOffer.GeneralComponent;
 
 namespace JobOffer
 {
@@ -27,6 +28,7 @@ namespace JobOffer
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddDbContext<ModelContext>(options => options.UseOracle(Configuration.GetConnectionString("DefaultConnection")));
             services.AddSession(options => { options.IdleTimeout = TimeSpan.FromMinutes(60); });
+            services.AddSignalR();
             services.AddRazorPages();
 
         }
@@ -51,9 +53,12 @@ namespace JobOffer
 
             app.UseEndpoints(endpoints =>
             {
+                
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=GuestUser}/{action=Home}/{id?}");
+
+                endpoints.MapHub<ChatHub>("/chatHub");
             });
         }
     }
