@@ -1,4 +1,5 @@
-﻿using JobOffer.Models;
+﻿using AspNetCoreHero.ToastNotification.Abstractions;
+using JobOffer.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using static JobOffer.Enums.ApplicationEnums;
@@ -9,13 +10,15 @@ namespace JobOffer.Controllers
     public class GuestUserController : Controller
     {
         #region Object 
+        private readonly INotyfService _notyf;
         private readonly ModelContext _context;
         #endregion
 
         #region Constructors
-        public GuestUserController(ModelContext context)
+        public GuestUserController(ModelContext context, INotyfService notyf)
         {
             _context = context;
+            _notyf = notyf;
         }
         #endregion
 
@@ -42,7 +45,6 @@ namespace JobOffer.Controllers
                             join Acc in AccountsList on job.Userid equals Acc.Userid
                             select new JobViewJoin { Job = job, Address = addr, Account = Acc };
             #endregion
-
 
 
             return View(modelView);

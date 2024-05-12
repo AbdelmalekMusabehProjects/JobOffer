@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using JobOffer.GeneralComponent;
+using AspNetCoreHero.ToastNotification;
 
 namespace JobOffer
 {
@@ -28,6 +29,13 @@ namespace JobOffer
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddDbContext<ModelContext>(options => options.UseOracle(Configuration.GetConnectionString("DefaultConnection")));
             services.AddSession(options => { options.IdleTimeout = TimeSpan.FromMinutes(60); });
+            services.AddNotyf(config =>
+            {
+                config.DurationInSeconds = 10;
+                config.IsDismissable = true;
+                config.Position = NotyfPosition.BottomRight;
+            }
+);
             services.AddSignalR();
             services.AddRazorPages();
 

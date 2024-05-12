@@ -16,21 +16,25 @@ using System.Linq;
 using System.Security.Cryptography;
 using MailKit.Net.Smtp;
 using static JobOffer.Enums.ApplicationEnums;
+using AspNetCoreHero.ToastNotification.Abstractions;
+using JobOffer.GeneralComponent;
 
 namespace JobOffer.Controllers
 {
     public class JobsController : Controller
     {
         #region Objects
+        private readonly INotyfService _notyf;
         private readonly ModelContext _context;
         private readonly IWebHostEnvironment _webHostEnviroment;
         #endregion
 
         #region Constructors
-        public JobsController(ModelContext context, IWebHostEnvironment webHostEnviroment)
+        public JobsController(ModelContext context, IWebHostEnvironment webHostEnviroment, INotyfService notyf)
         {
             _context = context;
             _webHostEnviroment = webHostEnviroment;
+            _notyf = notyf;
         }
         #endregion
 
@@ -58,99 +62,71 @@ namespace JobOffer.Controllers
         public IActionResult postJob([Bind("Jobname, Jobdescription, Jobtype, Jobsalary, Addressid, Jobcategoryid, Jobimage, ImageFile")] Jobh job)
         {
 
-            #region 'Set The User Id:The Current User' and 'set Status:Pending'
-            job.Userid = (decimal) HttpContext.Session.GetInt32("UserId");
-            job.Status = "Pending";
-            #endregion
-
-            #region Add The Values of Table To The DataBase and Save Them  
-            string wwwrootPath = _webHostEnviroment.WebRootPath;
-            string fileName = Guid.NewGuid().ToString() + "_" + job.ImageFile.FileName;
-            string extension = Path.GetExtension(job.ImageFile.FileName);
-
-            string path = Path.Combine(wwwrootPath + "/JobsImages/" + fileName);
-            using (var filestream = new FileStream(path, FileMode.Create))
+            try
             {
-                 job.ImageFile.CopyToAsync(filestream);
+                #region 'Set The User Id:The Current User' and 'set Status:Pending'
+                job.Userid = (decimal)HttpContext.Session.GetInt32("UserId");
+                job.Status = "Pending";
+                #endregion
+                
+                job.Jobimage = job.ImageFile != null ?
+                               new Localization().SaveImage(_webHostEnviroment, job.ImageFile.FileName, "JobsImages", job.ImageFile) :
+                               string.Empty;
+                
+                    
+                _context.Add(job);
+                _context.SaveChanges();
+                _notyf.Success("Successfully Posted");
+                _notyf.Information("Under process By Admin, You Will Receive an email from Admin when accept", 6);
+
+                #region Objects
+                var UserId = HttpContext.Session.GetInt32("UserId");
+                var UserInfo = _context.Useraccounths.Where(x => x.Userid == UserId).FirstOrDefault();
+                var JobInfo = _context.Jobhs.Where(x => x.Jobid == job.Jobid).FirstOrDefault();
+                var EmailInfo = _context.Useraccounths.Where(x => x.Userid == JobInfo.Userid).FirstOrDefault();
+                var AdminInfo = _context.Useraccounths.Where(x => x.Roleid == 1).FirstOrDefault();
+                Applyjob applyjob = new Applyjob();
+                #endregion
+
+                #region Sending Email To Admin
+                string subject = "Post a Job For " + JobInfo.Jobname + " " + UserInfo.Fullname;
+                string body = "The User " + " " + UserInfo.Fullname + " "
+                                             + "Post For The Job "
+                                             + JobInfo.Jobname
+                                             + " at "
+                                             + DateTime.Now.ToLongDateString()
+                                             + " Check The Page For Your Manage Jobs";
+
+                new Localization().sendEmail(AdminInfo.Email, subject, body);
+                #endregion
+
+                #region Sending Email To User
+
+                subject = "Post a Job For " + JobInfo.Jobname;
+                body = "Ms / Mrs" + " " + UserInfo.Fullname + " "
+                                            + "Thank You For Posting The Job "
+                                            + JobInfo.Jobname
+                                            + " The Admin Will Response To You As Possible as :) \n"
+                                            + "Note: See Your Page 'My Post Job' If The Admin Accepted";
+
+                new Localization().sendEmail(UserInfo.Email, subject, body);
+                #endregion
+
+                #region Values Of Drop Down List(AddressName, AddressCity, CatygoryJob)
+                ViewData["AddressName"] = new SelectList(_context.Addresshes, "Addressid", "Addressname", job.Addressid);
+                ViewData["AddressCity"] = new SelectList(_context.Addresshes, "Addressid", "Addresscity", job.Addressid);
+                ViewData["Jobcategoryid"] = new SelectList(_context.Jobcategoryhs, "Jobcategoryid", "Jobcategoryname", job.Jobcategory);
+                #endregion
+
+                return View();
             }
-            job.Jobimage = fileName;
-            _context.Add(job);
-            _context.SaveChanges();
-            #endregion
-
-            #region Objects
-            var UserId = HttpContext.Session.GetInt32("UserId");
-            var UserInfo = _context.Useraccounths.Where(x => x.Userid == UserId).FirstOrDefault();
-            var JobInfo = _context.Jobhs.Where(x => x.Jobid == job.Jobid).FirstOrDefault();
-            var EmailInfo = _context.Useraccounths.Where(x => x.Userid == JobInfo.Userid).FirstOrDefault();
-            var AdminInfo = _context.Useraccounths.Where(x => x.Roleid == 1).FirstOrDefault(); 
-            Applyjob applyjob = new Applyjob();
-            #endregion
-
-            #region Sending Email To Admin
-            var emaila = new MimeMessage();
-            emaila.From.Add(MailboxAddress.Parse("mlkmsbh84@outlook.com"));
-            emaila.To.Add(MailboxAddress.Parse(AdminInfo.Email));
-
-
-
-            emaila.Subject = "Post a Job For " + JobInfo.Jobname + " " + UserInfo.Fullname;
-            emaila.Body = new TextPart(TextFormat.Text)
+            catch (Exception ex)
             {
-                Text = "The User " + " " + UserInfo.Fullname + " "
-                                         + "Post For The Job "
-                                         + JobInfo.Jobname
-                                         + " at "
-                                         + DateTime.Now.ToLongDateString()
-                                         + " Check The Page For Your Manage Jobs"
-            };
-
-
-            using (var smtp = new SmtpClient())
-            {
-                smtp.Connect("smtp.outlook.com", 587, SecureSocketOptions.StartTls);
-                smtp.Authenticate("mlkmsbh84@outlook.com", "1234mlok1234");
-                smtp.Send(emaila);
-                smtp.Disconnect(true);
+                _notyf.Error("Something Went Wrong ...");
+                _notyf.Information("Error Msg :" + ex.Message + "\n" +
+                                   "StackTrace : " + ex.StackTrace);
+                return View();
             }
-            #endregion
-
-            #region Sending Email To User
-            var email = new MimeMessage();
-            email.From.Add(MailboxAddress.Parse("mlkmsbh84@outlook.com"));
-            email.To.Add(MailboxAddress.Parse(UserInfo.Email));
-
-
-
-            // Semail.email = "Test@gmail.com";
-            email.Subject = "Post a Job For " + JobInfo.Jobname;
-            email.Body = new TextPart(TextFormat.Text)
-            {
-                Text = "Ms / Mrs" + " " + UserInfo.Fullname + " "
-                                        + "Thank You For Posting The Job "
-                                        + JobInfo.Jobname
-                                        + " The Admin Will Response To You As Possible as :) \n"
-                                        + "Note: See Your Page 'My Post Job' If The Admin Accepted"
-            };
-
-            SmtpClient smtpClient = new SmtpClient();
-
-            using (var smtp = new SmtpClient())
-            {
-                smtp.Connect("smtp.outlook.com", 587, SecureSocketOptions.StartTls);
-                smtp.Authenticate("mlkmsbh84@outlook.com", "1234mlok1234");
-                smtp.Send(email);
-                smtp.Disconnect(true);
-            }
-            #endregion
-
-            #region Values Of Drop Down List(AddressName, AddressCity, CatygoryJob)
-            ViewData["AddressName"] = new SelectList(_context.Addresshes, "Addressid", "Addressname", job.Addressid);
-            ViewData["AddressCity"] = new SelectList(_context.Addresshes, "Addressid", "Addresscity", job.Addressid);
-            ViewData["Jobcategoryid"] = new SelectList(_context.Jobcategoryhs, "Jobcategoryid", "Jobcategoryname", job.Jobcategory); 
-            #endregion
-
-            return View();
         }
         #endregion
 
@@ -244,7 +220,7 @@ namespace JobOffer.Controllers
 
             #region Sending Email To Admin
             var emaila = new MimeMessage();
-            emaila.From.Add(MailboxAddress.Parse("haneenm7mud22@outlook.com"));
+            emaila.From.Add(MailboxAddress.Parse("mlkmsbh84@outlook.com"));
             emaila.To.Add(MailboxAddress.Parse(EmailInfo.Email));
 
 
@@ -263,7 +239,7 @@ namespace JobOffer.Controllers
             using (var smtp = new SmtpClient())
             {
                 smtp.Connect("smtp.outlook.com", 587, SecureSocketOptions.StartTls);
-                smtp.Authenticate("haneenm7mud22@outlook.com", "microsofthaneen2000");
+                smtp.Authenticate("mlkmsbh84@outlook.com", "1234mlok1234");
                 smtp.Send(emaila);
                 smtp.Disconnect(true);
             }
@@ -306,6 +282,7 @@ namespace JobOffer.Controllers
         #region My Applied Jobs
         public IActionResult MyAppliedJobs()
         {
+            
             var UserId = HttpContext.Session.GetInt32("UserId");
             var JobId = _context.Applyjobs.Where(x => x.Userid == UserId).Select(x => x.Jobid).FirstOrDefault();
             var JobAppliedList = from JobApply in _context.Applyjobs 

@@ -5,7 +5,9 @@
 <!DOCTYPE html>
 
 <html>
+   
 <head>
+    
     <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title</title>
     <link rel="stylesheet" href="~/Assests/css/custom-bs.css">
@@ -190,6 +192,10 @@
             }
         }
     </script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
+        @await Component.InvokeAsync("Notyf")
+@RenderSection("Scripts", required: false)
+
 
 </body>
 </html>

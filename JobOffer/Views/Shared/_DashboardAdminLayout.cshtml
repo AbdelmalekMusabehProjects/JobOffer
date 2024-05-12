@@ -4,11 +4,14 @@
     var UserName = ViewBag.AdminUser;
     var PersonalImage = ViewBag.PImage;
 }
+
 <head>
 
 
     
-
+        <script src="~/js/site.js" asp-append-version="true"></script>
+@await Component.InvokeAsync("Notyf")
+@RenderSection("Scripts", required: false)
     <title>Admin</title>
     <!-- HTML5 Shim and Respond.js IE11 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -144,6 +147,10 @@
             }
         }
     </script>
+     <script src="~/js/site.js" asp-append-version="true"></script>
+        @await Component.InvokeAsync("Notyf")
+@RenderSection("Scripts", required: false)
+
 
 </body>
 

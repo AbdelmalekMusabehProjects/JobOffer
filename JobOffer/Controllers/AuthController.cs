@@ -7,21 +7,25 @@ using System.Security.Cryptography.X509Certificates;
 using Microsoft.AspNetCore.Hosting;
 using System.IO;
 using System.Threading.Tasks;
+using AspNetCoreHero.ToastNotification.Abstractions;
+using JobOffer.GeneralComponent;
 
 namespace JobOffer.Controllers
 {
     public class AuthController : Controller
     {
         #region Objects
+        private readonly INotyfService _notyf;
         private readonly ModelContext _context;
         private readonly IWebHostEnvironment _webHostEnviroment;
         #endregion
 
         #region Constructors
-        public AuthController(ModelContext context, IWebHostEnvironment webHostEnviroment)
+        public AuthController(ModelContext context, IWebHostEnvironment webHostEnviroment, INotyfService notyf)
         {
             _context = context;
             _webHostEnviroment = webHostEnviroment;
+            _notyf = notyf;
         }
         #endregion
 
@@ -90,38 +94,57 @@ namespace JobOffer.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> signUp([Bind("Fullname, Username, Email, Phonenumber, Industialname, Password, Imagepath, ImageFile")] Useraccounth user)
         {
-            if (user != null)
+            try
             {
-                user.Roleid = 2;
-                if (user.Password.Length < 6)
+                if (user != null)
                 {
-                    Response.WriteAsync("<script>alert('Password Must Be Greater than 6 Character')</script>");
-                }
-                else
-                {
-                    #region Add And Save
-                    if (ModelState.IsValid)
+                    user.Roleid = 2;
+                    if (user.Password.Length < 6)
                     {
-                        string wwwrootPath = _webHostEnviroment.WebRootPath;
-                        string test = user.ImageFile.FileName;
-                        string fileName = Guid.NewGuid().ToString() + "_" + user.ImageFile.FileName;
-
-                        string path = Path.Combine(wwwrootPath + "/PersonalImages/" + fileName);
-                        using (var filestream = new FileStream(path, FileMode.Create))
-                        {
-                            await user.ImageFile.CopyToAsync(filestream);
-                        }
-                        user.Imagepath = fileName;
-                        _context.Add(user);
-                        _context.SaveChanges();
-                        #endregion
-                        return RedirectToAction("Login", "Auth");
+                        _notyf.Warning("Password Must Be Greater than 6 Character", 10);
+                        return View();
                     }
+                    else
+                    {
+                        if (ModelState.IsValid)
+                        {
+                            user.Imagepath = user.ImageFile != null ?
+                                   new Localization().SaveImage(_webHostEnviroment, user.ImageFile.FileName, "JobsImages", user.ImageFile) :
+                                   string.Empty;
+
+                              _context.Add(user);
+                             await _context.SaveChangesAsync();
+                             _notyf.Success("Successfully Created!", 10);
+
+                            string body = "Dear " + user.Fullname + ", \n\n" +
+                                "Thank You For Your Registration For JobBoard, \n\n" +
+                                "Enjoy Our Services And Easiest Appling Jobs,\n\n" +
+                                "All The Best and Good Luck.\n\n" +
+                                "Best Regards. \n\n" +
+                                "JobBoard Team",
+
+                                subject = "JobBoard New Account :)";
+                           
+                            new Localization().sendEmail(user.Email, subject, body);
+
+                            
+                            return RedirectToAction("Login", "Auth");
+                           
+                        }
+                    }
+
+
                 }
-
-
+                return View();
             }
-            return View();
+            catch (Exception ex)
+            {
+
+                _notyf.Error("Something Went Wrong ...");
+                _notyf.Information("Error Msg :" + ex.Message + "\n" +
+                                   "StackTrace : " + ex.StackTrace);
+                throw;
+            }
         }
         #endregion
 
