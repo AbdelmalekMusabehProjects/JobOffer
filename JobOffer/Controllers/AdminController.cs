@@ -16,7 +16,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using MailKit.Net.Smtp;
 using static JobOffer.Enums.ApplicationEnums;
-
+using AspNetCoreHero.ToastNotification.Abstractions;
+using JobOffer.GeneralComponent;
 
 namespace JobOffer.Controllers
 {
@@ -25,15 +26,17 @@ namespace JobOffer.Controllers
         #region Objects
         private readonly ModelContext _context;
         private readonly IWebHostEnvironment _webHostEnviroment;
+        private readonly INotyfService _notyf;
         List<string> status = new List<string> { "Pending", "Accept", "Reject" };
         List<string> JobType = new List<string> { "Part Time", "Full Time" };
         #endregion
 
         #region Constructor
-        public AdminController(ModelContext context, IWebHostEnvironment webHostEnviroment)
+        public AdminController(ModelContext context, IWebHostEnvironment webHostEnviroment, INotyfService notyf)
         {
             _context = context;
             _webHostEnviroment = webHostEnviroment;
+            _notyf = notyf;
 
         }
         #endregion
@@ -43,17 +46,27 @@ namespace JobOffer.Controllers
         #region Dashboard
         public IActionResult Dashboard()
         {
-            #region Get The Numbers Of (Job Posted, Candidates, Companies)
-            ViewBag.NumberOfJobPosted = _context.Jobhs.Count(x => x.Status == Status.Accept.ToString());
-            ViewBag.NumberOfJobNotPosted = _context.Jobhs.Count(x => x.Status == Status.Pending.ToString() || x.Status == Status.Reject.ToString());
-            ViewBag.NumberOfPeople = _context.Useraccounths.Count(x => x.Roleid == 2);
-            ViewBag.NumberOfCompanies = _context.Useraccounths.Count();
-            #endregion
-            ViewBag.AdminUser =  HttpContext.Session.GetString("AdminUser");
-            string AdminName = ViewBag.AdminUser;
-            ViewBag.PImage = HttpContext.Session.GetString("imagePath");
+            try
+            {
+                #region Get The Numbers Of (Job Posted, Candidates, Companies)
+                ViewBag.NumberOfJobPosted = _context.Jobhs.Count(x => x.Status == Status.Accept.ToString());
+                ViewBag.NumberOfJobNotPosted = _context.Jobhs.Count(x => x.Status == Status.Pending.ToString() || x.Status == Status.Reject.ToString());
+                ViewBag.NumberOfPeople = _context.Useraccounths.Count(x => x.Roleid == 2);
+                ViewBag.NumberOfCompanies = _context.Useraccounths.Count();
+                #endregion
+                ViewBag.AdminUser = HttpContext.Session.GetString("AdminUser");
+                string AdminName = ViewBag.AdminUser;
+                ViewBag.PImage = HttpContext.Session.GetString("imagePath");
 
-            return View("~/Views/Admin/Dashboard/Dashboard.cshtml");
+                return View("~/Views/Admin/Dashboard/Dashboard.cshtml");
+            }
+            catch (Exception ex)
+            {
+                _notyf.Error("Something Went Wrong!");
+                _notyf.Information("ErrMsg: " + ex.Message + "\n\n" +
+                                   "StacKTrace: " + ex.StackTrace, 6);
+                return View("~/Views/Admin/Dashboard/Dashboard.cshtml");
+            }
         }
         #endregion
 
@@ -62,34 +75,51 @@ namespace JobOffer.Controllers
         #region Get Data Users
         public async Task<IActionResult> MainUser()
         {
-            ViewBag.PImage = HttpContext.Session.GetString("imagePath");
-            var modelContext = _context.Useraccounths.Include(u => u.Role); // 1 user , 2 admin  
-            return View("~/Views/Admin/ManageUsers/MainUser.cshtml", modelContext); 
-
-
-            //return View(await modelContext.ToListAsync());
+            try
+            {
+                ViewBag.PImage = HttpContext.Session.GetString("imagePath");
+                var modelContext = _context.Useraccounths.Include(u => u.Role);
+                return View("~/Views/Admin/ManageUsers/MainUser.cshtml", modelContext);
+            }
+            catch (Exception ex)
+            {
+                _notyf.Error("Something Went Wrong!");
+                _notyf.Information("ErrMsg: " + ex.Message + "\n\n" +
+                                   "StacKTrace: " + ex.StackTrace, 6);
+                return View("~/Views/Admin/ManageUsers/MainUser.cshtml");
+            }
         }
         #endregion
 
         #region Get Data Users Details
         public async Task<IActionResult> DetailsUser(decimal? id)
         {
-            ViewBag.PImage = HttpContext.Session.GetString("imagePath");
-
-            if (id == null)
+            try
             {
-                return NotFound();
-            }
+                ViewBag.PImage = HttpContext.Session.GetString("imagePath");
 
-            var useraccounth = await _context.Useraccounths
-                .Include(u => u.Role)
-                .FirstOrDefaultAsync(m => m.Userid == id);
-            if (useraccounth == null)
+                if (id == null)
+                {
+                    return NotFound();
+                }
+
+                var useraccounth = await _context.Useraccounths
+                    .Include(u => u.Role)
+                    .FirstOrDefaultAsync(m => m.Userid == id);
+                if (useraccounth == null)
+                {
+                    return NotFound();
+                }
+
+                return View("~/Views/Admin/ManageUsers/DetailsUser.cshtml", useraccounth);
+            }
+            catch (Exception ex)
             {
-                return NotFound();
+                _notyf.Error("Something Went Wrong!");
+                _notyf.Information("ErrMsg: " + ex.Message + "\n\n" +
+                                   "StacKTrace: " + ex.StackTrace, 6);
+                return View("~/Views/Admin/ManageUsers/DetailsUser.cshtml");
             }
-
-            return View("~/Views/Admin/ManageUsers/DetailsUser.cshtml", useraccounth);
         }
         #endregion
 
@@ -110,26 +140,34 @@ namespace JobOffer.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateUser([Bind("Userid,Fullname,Username,Email,Phonenumber,Industialname,Roleid,Password,Imagepath, ImageFile")] Useraccounth useraccounth)
         {
-            ViewBag.PImage = HttpContext.Session.GetString("imagePath");
-
-            if (ModelState.IsValid)
+            try
             {
-                string wwwrootPath = _webHostEnviroment.WebRootPath;
-                string fileName = Guid.NewGuid().ToString() + "_" + useraccounth.ImageFile.FileName; 
+                ViewBag.PImage = HttpContext.Session.GetString("imagePath");
 
-                string path = Path.Combine(wwwrootPath + "/PersonalImages/" + fileName);
-                using (var filestream = new FileStream(path, FileMode.Create))
+                if (ModelState.IsValid)
                 {
-                    await useraccounth.ImageFile.CopyToAsync(filestream);
+                    useraccounth.Imagepath = useraccounth.ImageFile != null ?
+                               new Localization().SaveImage(_webHostEnviroment, useraccounth.ImageFile.FileName, "PersonalImages", useraccounth.ImageFile) :
+                               string.Empty;
+                    
+                    _context.Add(useraccounth);
+                    if(_context.SaveChangesAsync().IsCompletedSuccessfully)
+                    {
+                         _notyf.Success("Successfully Added");
+                    } 
+                    
+                    return RedirectToAction(nameof(MainUser));
                 }
-                useraccounth.Imagepath = fileName;
-
-                _context.Add(useraccounth);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(MainUser));
+                ViewData["Roleid"] = new SelectList(_context.Rolehs, "Roleid", "Rolename", useraccounth.Roleid);
+                return View("~/Views/Admin/ManageUsers/CreateUser.cshtml", useraccounth);
             }
-            ViewData["Roleid"] = new SelectList(_context.Rolehs, "Roleid", "Rolename", useraccounth.Roleid);
-            return View("~/Views/Admin/ManageUsers/CreateUser.cshtml", useraccounth);
+            catch (Exception ex)
+            {
+                _notyf.Error("Something Went Wrong!");
+                _notyf.Information("ErrMsg: " + ex.Message + "\n\n" +
+                                   "StacKTrace: " + ex.StackTrace, 6);
+                return View("~/Views/Admin/ManageUsers/CreateUser.cshtml");
+            }
         }
         #endregion
 
@@ -175,15 +213,10 @@ namespace JobOffer.Controllers
                 {
                     if (useraccounth.ImageFile != null)
                     {
-                        string wwwrootPath = _webHostEnviroment.WebRootPath;
-                        string fileName = Guid.NewGuid().ToString() + "_" + useraccounth.ImageFile.FileName;
-                        string path = Path.Combine(wwwrootPath + "/PersonalImages/" + fileName);
-                        using (var filestream = new FileStream(path, FileMode.Create))
-                        {
-                            await useraccounth.ImageFile.CopyToAsync(filestream);
-                        }
-
-                        useraccounth.Imagepath = fileName;
+                        useraccounth.Imagepath = useraccounth.ImageFile != null ?
+                               new Localization().SaveImage(_webHostEnviroment, useraccounth.ImageFile.FileName, "PersonalImages", useraccounth.ImageFile) :
+                               string.Empty;
+  
                     }
                     else
                     {
@@ -191,9 +224,11 @@ namespace JobOffer.Controllers
 
                     }
 
-
                     _context.Update(useraccounth);
                     await _context.SaveChangesAsync();
+                    _notyf.Success("Successfully Updated!");
+
+
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -244,12 +279,25 @@ namespace JobOffer.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteUser(decimal id)
         {
-            ViewBag.PImage = HttpContext.Session.GetString("imagePath");
+            try
+            {
+                ViewBag.PImage = HttpContext.Session.GetString("imagePath");
 
-            var useraccounth = await _context.Useraccounths.FindAsync(id);
-            _context.Useraccounths.Remove(useraccounth);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(MainUser));    
+                var useraccounth = await _context.Useraccounths.FindAsync(id);
+                _context.Useraccounths.Remove(useraccounth);
+                await _context.SaveChangesAsync();
+                _notyf.Success("Successfully Deleted!");
+
+                return RedirectToAction(nameof(MainUser));
+            }
+            catch (Exception ex)
+            {
+                _notyf.Error("Something Went Wrong!");
+                _notyf.Information("ErrMsg: " + ex.Message + "\n\n" +
+                                   "StacKTrace: " + ex.StackTrace, 6);
+                return RedirectToAction(nameof(MainUser));
+
+            }
         }
         #endregion
 

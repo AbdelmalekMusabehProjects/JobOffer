@@ -138,30 +138,32 @@
         </div>
         
         <ul class="job-listings mb-5">
-             @foreach (var item in Model)
-        {
-          <li class="job-listing d-block d-sm-flex pb-3 pb-sm-0 align-items-center">
-                            <a asp-controller="Jobs" asp-action="ApplyJob" asp-route-Jobid=@item.Job.Jobid></a>
-            <div class="job-listing-logo">
-                                <img src="@Url.Content("~/JobsImages/" + @item.Job.Jobimage)" width="100" height="100" />
-            </div>
+                    @if (Model != null)
+                    {
+                        @foreach (var item in Model)
+                        {
+                            <li class="job-listing d-block d-sm-flex pb-3 pb-sm-0 align-items-center">
+                                <a asp-controller="Jobs" asp-action="ApplyJob" asp-route-Jobid=@item.Job.Jobid></a>
+                                <div class="job-listing-logo">
+                                    <img src="@Url.Content("~/JobsImages/" + @item.Job.Jobimage)" width="100" height="100" />
+                                </div>
 
-            <div class="job-listing-about d-sm-flex custom-width w-100 justify-content-between mx-4">
-              <div class="job-listing-position custom-width w-50 mb-3 mb-sm-0">
-                <h2>@item.Job.Jobname</h2>
-                                    <strong>@item.Account.Industialname</strong>
-              </div>
-              <div class="job-listing-location mb-3 mb-sm-0 custom-width w-25">
-                <span class="icon-room"></span> @item.Address.Addresscity, @item.Address.Addressname
-              </div>
-              <div class="job-listing-meta">
-                <span class="badge badge-danger">@item.Job.Jobtype</span>
-              </div>
-            </div>
-            
-          </li>
-         
-          }
+                                <div class="job-listing-about d-sm-flex custom-width w-100 justify-content-between mx-4">
+                                    <div class="job-listing-position custom-width w-50 mb-3 mb-sm-0">
+                                        <h2>@item.Job.Jobname</h2>
+                                        <strong>@item.Account.Industialname</strong>
+                                    </div>
+                                    <div class="job-listing-location mb-3 mb-sm-0 custom-width w-25">
+                                        <span class="icon-room"></span> @item.Address.Addresscity, @item.Address.Addressname
+                                    </div>
+                                    <div class="job-listing-meta">
+                                        <span class="badge badge-danger">@item.Job.Jobtype</span>
+                                    </div>
+                                </div>
+
+                            </li>
+                        }
+                    }
         </ul>
 
         <div class="row pagination-wrap">

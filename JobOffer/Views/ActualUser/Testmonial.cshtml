@@ -60,23 +60,26 @@
     <div class="container">
 
         <div class="row">
-            @foreach (var item in Model)
+            @if (Model != null)
             {
-                <div class="col-lg-3 mb-4">
-                    <div class="block__87154">
-                        <blockquote>
-                            <p>@item.Test.Message</p>
-                        </blockquote>
-                        <div class="block__91147 d-flex align-items-center">
-                            <figure class="mr-4"><img src="~/PersonalImages/@item.Account.Imagepath" alt="Image" class="img-fluid"></figure>
-                            <div>
-                                <h3>@item.Account.Fullname</h3>
+                @foreach (var item in Model)
+                {
+                    <div class="col-lg-3 mb-4">
+                        <div class="block__87154">
+                            <blockquote>
+                                <p>@item.Test.Message</p>
+                            </blockquote>
+                            <div class="block__91147 d-flex align-items-center">
+                                <figure class="mr-4"><img src="~/PersonalImages/@item.Account.Imagepath" alt="Image" class="img-fluid"></figure>
+                                <div>
+                                    <h3>@item.Account.Fullname</h3>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
 
+                }
             }
         </div>
     </div>

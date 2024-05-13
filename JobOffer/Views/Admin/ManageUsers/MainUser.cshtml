@@ -63,40 +63,45 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Fullname)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Username)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Phonenumber)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Industialname)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Password)
-            </td>
-            <td>
-              <img src="@Url.Content("~/PersonalImages/" + @item.Imagepath)" width="100" height="100" />
-                   
-            <td>
-                @Html.DisplayFor(modelItem => item.Role.Rolename)
-            </td>
-            <td>
-                    <a asp-action="EditUser" asp-route-id="@item.Userid">Edit</a> |
-                    <a asp-action="DetailsUser" asp-route-id="@item.Userid">Details</a> |
-                    <a asp-action="DeleteUser" asp-route-id="@item.Userid">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
+            @if (Model != null)
+            {
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Fullname)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Username)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Email)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Phonenumber)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Industialname)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Password)
+                        </td>
+                        <td>
+                            <img src="@Url.Content("~/PersonalImages/" + @item.Imagepath)" width="100" height="100" />
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Role.Rolename)
+                            </td>
+                            <td>
+                                <a asp-action="EditUser" asp-route-id="@item.Userid">Edit</a> |
+                                <a asp-action="DetailsUser" asp-route-id="@item.Userid">Details</a> |
+                                <a asp-action="DeleteUser" asp-route-id="@item.Userid">Delete</a>
+                            </td>
+                    </tr>
+                }
+
+            }
+        </tbody>
 </table>
 </div>
 
