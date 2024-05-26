@@ -1,20 +1,13 @@
-﻿using MailKit.Security;
-using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using MimeKit.Text;
-using MimeKit;
-using Oracle.ManagedDataAccess.Types;
 using JobOffer.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
-using System.Security.Cryptography;
-using MailKit.Net.Smtp;
 using static JobOffer.Enums.ApplicationEnums;
 using AspNetCoreHero.ToastNotification.Abstractions;
 using JobOffer.GeneralComponent;
@@ -219,60 +212,30 @@ namespace JobOffer.Controllers
             #endregion
 
             #region Sending Email To Admin
-            var emaila = new MimeMessage();
-            emaila.From.Add(MailboxAddress.Parse("mlkmsbh84@outlook.com"));
-            emaila.To.Add(MailboxAddress.Parse(EmailInfo.Email));
 
-
-
-            emaila.Subject = "Applied Job For "  + JobInfo.Jobname + " " + UserInfo.Fullname;
-            emaila.Body = new TextPart(TextFormat.Text)
-            {
-                Text = "The User " + " " + UserInfo.Fullname + " "
+            string subjectAdmin = "Applied Job For "  + JobInfo.Jobname + " " + UserInfo.Fullname;
+            string bodyAdmin = "The User " + " " + UserInfo.Fullname + " "
                                          + "Applied For The Job"
-                                         + JobInfo.Jobname 
+                                         + JobInfo.Jobname
                                          + " at "
-                                         + DateTime.Now.ToLongDateString()
-            };
+                                         + DateTime.Now.ToLongDateString();
 
+            new Localization().sendEmail(EmailInfo.Email, subjectAdmin, bodyAdmin);
 
-            using (var smtp = new SmtpClient())
-            {
-                smtp.Connect("smtp.outlook.com", 587, SecureSocketOptions.StartTls);
-                smtp.Authenticate("mlkmsbh84@outlook.com", "1234mlok1234");
-                smtp.Send(emaila);
-                smtp.Disconnect(true);
-            }
+         
+              
             #endregion
 
             #region Sending Email To User
-            var email = new MimeMessage();
-            email.From.Add(MailboxAddress.Parse("mlkmsbh84@outlook.com"));
-            email.To.Add(MailboxAddress.Parse(UserInfo.Email));
+         
+            string subject = "Apply Job For " + JobInfo.Jobname;
+            string body = "Ms / Mrs" + " " + UserInfo.Fullname + " "
+                                                               + "Thank You For Applying The Job "
+                                                                + JobInfo.Jobname;
+            
+            new Localization().sendEmail(UserInfo.Email, subject, body);
 
-
-
-            // Semail.email = "Test@gmail.com";
-            email.Subject = "Apply Job For " + JobInfo.Jobname;
-            email.Body = new TextPart(TextFormat.Text)
-            {
-                Text = "Ms / Mrs" + " " + UserInfo.Fullname + " "
-                                                                           + "Thank You For Applying The Job "
-                                                                            + JobInfo.Jobname
-            };
-
-            SmtpClient smtpClient = new SmtpClient();
-
-            using (var smtp = new SmtpClient())
-            {
-                smtp.Connect("smtp.outlook.com", 587, SecureSocketOptions.StartTls);
-                smtp.Authenticate("mlkmsbh84@outlook.com", "1234mlok1234");
-                smtp.Send(email);
-                smtp.Disconnect(true);
-            }
             #endregion
-
-
 
             return RedirectToAction("Home", "ActualUser");
         }

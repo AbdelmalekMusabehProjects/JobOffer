@@ -1,6 +1,7 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
 using JobOffer.Models;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Linq;
 using static JobOffer.Enums.ApplicationEnums;
 
@@ -27,27 +28,35 @@ namespace JobOffer.Controllers
         #region Home
         public IActionResult Home()
         {
-            #region List Of (Job, Address, UserAccount)
-            var JobList = _context.Jobhs.Where(x => x.Status == Status.Accept.ToString()).ToList();
-            var AddressList = _context.Addresshes.ToList();
-            var AccountsList = _context.Useraccounths.ToList();
-            #endregion
+            try
+            {
+                #region List Of (Job, Address, UserAccount)
+                var JobList = _context.Jobhs.Where(x => x.Status == Status.Accept.ToString()).ToList();
+                var AddressList = _context.Addresshes.ToList();
+                var AccountsList = _context.Useraccounths.ToList();
+                #endregion
 
-            #region Get The Numbers Of (Job Posted, Candidates, Companies)
-            ViewBag.NumberOfJobPosted = JobList.Count(x => x.Status == Status.Accept.ToString());
-            ViewBag.NumberOfPeople = AccountsList.Count(x => x.Roleid == 2);
-            ViewBag.NumberOfCompanies = AccountsList.Count();
-            #endregion
+                #region Get The Numbers Of (Job Posted, Candidates, Companies)
+                ViewBag.NumberOfJobPosted = JobList.Count(x => x.Status == Status.Accept.ToString());
+                ViewBag.NumberOfPeople = AccountsList.Count(x => x.Roleid == 2);
+                ViewBag.NumberOfCompanies = AccountsList.Count();
+                #endregion
 
-            #region Join Tables Between(Job, Address, UserAccount)
-            var modelView = from addr in AddressList
-                            join job in JobList on addr.Addressid equals job.Addressid
-                            join Acc in AccountsList on job.Userid equals Acc.Userid
-                            select new JobViewJoin { Job = job, Address = addr, Account = Acc };
-            #endregion
+                #region Join Tables Between(Job, Address, UserAccount)
+                var modelView = from addr in AddressList
+                                join job in JobList on addr.Addressid equals job.Addressid
+                                join Acc in AccountsList on job.Userid equals Acc.Userid
+                                select new JobViewJoin { Job = job, Address = addr, Account = Acc };
+                #endregion
 
 
-            return View(modelView);
+                return View(modelView);
+            }
+            catch (Exception ex)
+            {
+                _notyf.Warning(ex.Message);
+                return View();
+            }
         }
         #endregion
 
@@ -81,6 +90,7 @@ namespace JobOffer.Controllers
                             where test.Status == Status.Accept.ToString()
                             select new TestmonialViewJoin { Test = test, Account = user };
             #endregion
+
             return View(modelView);
         }
         #endregion
@@ -111,7 +121,6 @@ namespace JobOffer.Controllers
             {
 
                 var result = modelView.Where(x => x.Job.Jobname.ToLower().Contains(job.ToLower()) || x.Job.Jobname.ToLower().StartsWith(job.ToLower())).ToList();
-                //   return RedirectToAction ("Home", "ActualUser");
                 return View(nameof(Home), result);
             }
             #endregion

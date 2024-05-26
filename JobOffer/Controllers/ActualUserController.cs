@@ -1,15 +1,10 @@
-﻿using MailKit.Net.Smtp;
-using MailKit.Security;
-using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using MimeKit;
-using MimeKit.Text;
 using JobOffer.Models;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using static JobOffer.Enums.ApplicationEnums;
@@ -132,7 +127,7 @@ namespace JobOffer.Controllers
                 #region Send Email To Admin And User
 
                 string body = "The Problem From " + " " + Semail.fname + " " + Semail.lname + " " + Semail.message;
-                new Localization().sendEmail("mlkmsbh84@outlook.com", Semail.subject, body);
+                new Localization().sendEmail("201910668@students.asu.edu.jo", Semail.subject, body);
 
                 string bodyUser = "Ms / Mrs" + " " + Semail.fname + " " + Semail.lname + " " + "Thank You For Contacting Us :)";
                 new Localization().sendEmail(Semail.email, "Contacting Us!", bodyUser);

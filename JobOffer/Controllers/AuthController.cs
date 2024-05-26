@@ -3,9 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using JobOffer.Models;
 using System;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 using Microsoft.AspNetCore.Hosting;
-using System.IO;
 using System.Threading.Tasks;
 using AspNetCoreHero.ToastNotification.Abstractions;
 using JobOffer.GeneralComponent;
@@ -111,6 +109,8 @@ namespace JobOffer.Controllers
                             user.Imagepath = user.ImageFile != null ?
                                    new Localization().SaveImage(_webHostEnviroment, user.ImageFile.FileName, "JobsImages", user.ImageFile) :
                                    string.Empty;
+
+                            user.Industialname = string.IsNullOrEmpty(user.Industialname) ? "  " : user.Industialname;
 
                               _context.Add(user);
                              await _context.SaveChangesAsync();

@@ -18,7 +18,7 @@ namespace JobOffer.GeneralComponent
         public void sendEmail(string recevierEmail, string subject, string body)
         {
             var emaila = new MimeMessage();
-            emaila.From.Add(MailboxAddress.Parse("mlkmsbh84@outlook.com"));
+            emaila.From.Add(MailboxAddress.Parse("201910668@students.asu.edu.jo"));
             emaila.To.Add(MailboxAddress.Parse(recevierEmail));
 
 
@@ -33,7 +33,7 @@ namespace JobOffer.GeneralComponent
             using (var smtp = new SmtpClient())
             {
                 smtp.Connect("smtp.outlook.com", 587, SecureSocketOptions.StartTls);
-                smtp.Authenticate("mlkmsbh84@outlook.com", "1234mlok1234");
+                smtp.Authenticate("201910668@students.asu.edu.jo", "Wor12590");
                 smtp.Send(emaila);
                 smtp.Disconnect(true);
             }

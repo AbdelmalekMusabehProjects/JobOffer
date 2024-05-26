@@ -1,20 +1,15 @@
-﻿using MailKit.Security;
-using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using MimeKit.Text;
-using MimeKit;
 using JobOffer.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using MailKit.Net.Smtp;
 using static JobOffer.Enums.ApplicationEnums;
 using AspNetCoreHero.ToastNotification.Abstractions;
 using JobOffer.GeneralComponent;
@@ -348,33 +343,14 @@ namespace JobOffer.Controllers
             _context.SaveChanges();
 
             #region Sending Email To User
-            var email = new MimeMessage();
-
-
-            email.From.Add(MailboxAddress.Parse("mlkmsbh84@outlook.com"));
-            email.To.Add(MailboxAddress.Parse(UserInfo.Email));
-
-
-            // Semail.email = "Test@gmail.com";  
-            email.Subject = "Accepted For Posting " + JobStatus.Jobname;
-            email.Body = new TextPart(TextFormat.Text)
-            {
-                Text = "Ms / Mrs" + " " + UserInfo.Fullname + " "
+            string subject = "Accepted For Posting " + JobStatus.Jobname;
+            string body = "Ms / Mrs" + " " + UserInfo.Fullname + " "
                                         + "The Job That You Posted Before Is Accepted Which Is "
-                                        +  JobStatus.Jobname
+                                        + JobStatus.Jobname
                                         + " \n"
-                                        + " See Your Page 'My Post Job' "
-            };
+                                        + " See Your Page 'My Post Job' ";
 
-            SmtpClient smtpClient = new SmtpClient();
-
-            using (var smtp = new SmtpClient())
-            {
-                smtp.Connect("smtp.outlook.com", 587, SecureSocketOptions.StartTls);
-                smtp.Authenticate("mlkmsbh84@outlook.com", "1234mlok1234");
-                smtp.Send(email);
-                smtp.Disconnect(true);
-            }
+            new Localization().sendEmail("201910668@students.asu.edu.jo", subject, body);
             #endregion
 
             return RedirectToAction("MainJobs", "Admin");
@@ -390,32 +366,16 @@ namespace JobOffer.Controllers
             _context.SaveChanges();
 
             #region Sending Email To User
-            var email = new MimeMessage();
-            email.From.Add(MailboxAddress.Parse("mlkmsbh84@outlook.com"));
-            email.To.Add(MailboxAddress.Parse(UserInfo.Email));
 
 
-
-            // Semail.email = "Test@gmail.com";
-            email.Subject = "Rejecting For Posting Job " + JobStatus.Jobname;
-            email.Body = new TextPart(TextFormat.Text)
-            {
-                Text = "Ms / Mrs" + " " + UserInfo.Fullname + " "
+            string Subject = "Rejecting For Posting Job " + JobStatus.Jobname;
+            string body = "Ms / Mrs" + " " + UserInfo.Fullname + " "
                                         + "The Job That You Posted Before Is Rejected Which Is "
                                         + JobStatus.Jobname
                                         + " \n"
-                                        + " Unfortunately Try Next Time and Thank You For Your Time"
-            };
-
-            SmtpClient smtpClient = new SmtpClient();
-
-            using (var smtp = new SmtpClient())
-            {
-                smtp.Connect("smtp.outlook.com", 587, SecureSocketOptions.StartTls);
-                smtp.Authenticate("mlkmsbh84@outlook.com", "1234mlok1234");
-                smtp.Send(email);
-                smtp.Disconnect(true);
-            }
+                                        + " Unfortunately Try Next Time and Thank You For Your Time";
+            new Localization().sendEmail(UserInfo.Email, Subject, body);
+           
             #endregion
 
             return RedirectToAction("MainJobs", "Admin");
